@@ -1,0 +1,58 @@
+------------------------------ TELNET -----------------------------------------
+
+- en
+- conf t
+- int vlan 1
+- ip add 192.168.1.1
+- no sh
+- exit
+- line vty 0 15
+- pass <switch-access-pass> [the password that will be used to TELNET into the switch]
+- login
+- exit
+- enable pass <priviledged access mode pass> [the password that will be used to put the switch into priviledge mode after TELNETTING into it]
+
+------------------------------ SSH -----------------------------------------
+
+- hostname router1
+- ip domain name final-lab
+- crypto key generate rsa
+- 1024
+- ip ssh version 2
+- line vty 0 15
+- transport input ssh
+- exit
+- username pluuto secret abc123
+- line vty 0 15
+- login local
+
+------------------------------ SUBNETTING THEORY -----------------------------------------
+
+- classful addressing: 
+- 5 IP classes, each with a pre-defined default subnet mask. CAN NOT
+- further break a subnet into smaller subnets.
+- e.g, 120.137.0.1, an IP of class A, has a default mask of 255.0.0.0. This IP can have
+- 256*2556*256 IPs. We can not create more subnets of this 120.0.0.0 network.
+- 192.130.10.15, an IP of class C, has a default mask of 255.255.255.0. This network
+- (192.130.10.0) can only have 256 usable IPs.
+- Note: How many hosts an IP address can have is specified by the mask. In case of 
+- 120.137.0.1, the network was 120.0.0.0 as specified by the subnet mask. So, 256^3
+- usable IPs. In case of 192.130.10.15, the network was 192.130.10.0 as specified by
+- the mask. So 256 IPs only.
+
+- classless addressing:
+- no concept of classes, any IP address can be given any subnet mask. Not just /8, /16
+- /24 as was with classful addressing. 
+
+------------------------------ RIP v1/v2 -----------------------------------------
+
+- router rip
+- version 2 [dont include this if dont want to enable RIPv2]
+- network 192.168.0.0 [a /24 network connected to one of the interfaces of the router]
+- network 10.0.0.0 [a /8 point-to-point network that connects one router to another router]
+
+------------------------------ OSPF -----------------------------------------
+
+- router ospf 1
+- network 120.137.0.1 0.255.255.255 area 0 [0.255.255.255 is a wildcard. Basically, just reverse the subnet bits. So, where class A has a default subnet of 255.0.0.0, it's wildcard will be 0.255.255.255. Same technique will be used for getting a wildcard of a subnetted mask]
+
