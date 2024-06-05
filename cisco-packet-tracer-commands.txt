@@ -82,3 +82,26 @@
 - classless addressing:
 - no concept of classes, any IP address can be given any subnet mask. Not just /8, /16
 - /24 as was with classful addressing.
+- for example, an IP of 10.0.0.0 can be assigned a /24 subnet and it will work fine.
+- This introduced further implications. Now that each IP can have any mask, this means
+- we can assign to an organization, a large chunk of the IP address space. Sure, this will
+- work no problems, but the network will be super slow and managing it will be a pain.
+- Imagine managing a 1000 or more devices in a single building. For this purpose, we can
+- break a network into further smaller logical networks, called subnets. This is how they
+- work:
+- You have been assigned an IP of 123.45.0.0 /12. This mask supports 2 ^ 20 = 1,048,576 IPs
+- Just like a /8 IP contains 16 million IPs (2^24) and a /24 ip contains 256 IPs (2^8)
+- Further subnetting it requires us that we take bits from the host portion (the 24 bits)
+- and assign it the network portion. In our case, breaking this network in two subnets
+- will require us to take one bit only. Because a bit can be only off or on, when a bit will be
+- off, it will form one network, and when the bit is on, it will form another network.
+- So 123.45.0.0 /12 will turn into 123.45.0.0 /13 and the total host count will drop from
+- 1,048,576 to 524,288 in each 2 subnets each. The network id of this first portion will be
+- 123.45.0.0 /13 and broadcast will be 123.52.0.0 /13. And for the second, it will be 123.53.0.0 to 
+- 123.60.0.0.
+- We can calculate the subnet mask like
+- 11111111.11111000.00000000.00000000 = 255.248.0.0 (simple binary to integer conversion)
+- This is the essence of subnetting. Also, we can divide a network into into subnets containing
+- a variable number of hosts. Above, we divided a network into 2 networks of equal sizes, but we
+- also divide it such that the number of hosts in each subnet is different. Note that the second
+- subnet starting from 123.52.0.0 will not change.
